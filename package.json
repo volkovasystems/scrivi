@@ -1,6 +1,6 @@
 {
   "name": "scrivi",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Write file.",
   "main": "scrivi.js",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/volkovasystems/scrivi#readme",
   "dependencies": {
-    "kept": "^0.1.0",
-    "letgo": "0.0.0"
+    "kept": "^0.1.1",
+    "letgo": "0.0.3"
   }
 }

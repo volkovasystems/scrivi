@@ -37,8 +37,7 @@
 			"eMail": "richeve.bebedor@gmail.com",
 			"repository": "https://github.com:volkovasystems/scrivi.git",
 			"test": "scrivi-test.js",
-			"global": true,
-			"class": true
+			"global": true
 		}
 	@end-module-configuration
 
@@ -70,15 +69,11 @@ var scrivi = function scrivi( path, content, synchronous ){
 		@end-meta-configuration
 	*/
 
-	if( typeof path != "string" ||
-		!path )
-	{
+	if( typeof path != "string" || !path ){
 		throw new Error( "invalid path" );
 	}
 
-	if( typeof content != "string" ||
-		!content )
-	{
+	if( typeof content != "string" || !content ){
 		throw new Error( "invalid content" );
 	}
 
