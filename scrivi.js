@@ -32,6 +32,9 @@
 			"file": "scrivi.js",
 			"module": "scrivi",
 			"author": "Richeve S. Bebedor",
+			"contributors": [
+				"John Lenon Maghanoy <johnlenonmaghanoy@gmail.com>"
+			],
 			"eMail": "richeve.bebedor@gmail.com",
 			"repository": "https://github.com:volkovasystems/scrivi.git",
 			"test": "scrivi-test.js",
@@ -53,12 +56,14 @@
 	@end-include
 */
 
-var fs = require( "fs" );
-var kept = require( "kept" );
-var letgo = require( "letgo" );
-var zelf = require( "zelf" );
+const falzy = require( "falzy" );
+const fs = require( "fs" );
+const kept = require( "kept" );
+const letgo = require( "letgo" );
+const protype = require( "protype" );
+const zelf = require( "zelf" );
 
-var scrivi = function scrivi( path, content, synchronous ){
+const scrivi = function scrivi( path, content, synchronous ){
 	/*;
 		@meta-configuration:
 			{
@@ -69,11 +74,11 @@ var scrivi = function scrivi( path, content, synchronous ){
 		@end-meta-configuration
 	*/
 
-	if( typeof path != "string" || !path ){
+	if( !protype( path, STRING ) || falzy( path ) ){
 		throw new Error( "invalid path" );
 	}
 
-	if( typeof content != "string" || !content ){
+	if( !protype( content, STRING ) || falzy( content ) ){
 		throw new Error( "invalid content" );
 	}
 
@@ -98,9 +103,9 @@ var scrivi = function scrivi( path, content, synchronous ){
 		}
 
 	}else{
-		var self = zelf( this );
+		let self = zelf( this );
 
-		var catcher = letgo.bind( self )( );
+		let catcher = letgo.bind( self )( );
 
 		kept( path, WRITE )
 			( function ifWritable( error, writable ){
