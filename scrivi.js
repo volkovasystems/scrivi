@@ -51,6 +51,7 @@
 			"fs": "fs",
 			"kept": "kept",
 			"letgo": "letgo",
+			"protype": "protype",
 			"zelf": "zelf"
 		}
 	@end-include
@@ -74,11 +75,11 @@ const scrivi = function scrivi( path, content, synchronous ){
 		@end-meta-configuration
 	*/
 
-	if( !protype( path, STRING ) || falzy( path ) ){
+	if( falzy( path ) || !protype( path, STRING ) ){
 		throw new Error( "invalid path" );
 	}
 
-	if( !protype( content, STRING ) || falzy( content ) ){
+	if( falzy( content ) || !protype( content, STRING ) ){
 		throw new Error( "invalid content" );
 	}
 
@@ -91,7 +92,7 @@ const scrivi = function scrivi( path, content, synchronous ){
 					return true;
 
 				}catch( error ){
-					throw new Error( "error writing file, " + error.message );
+					throw new Error( `error writing to file, ${ error }` );
 				}
 
 			}else{
@@ -99,38 +100,40 @@ const scrivi = function scrivi( path, content, synchronous ){
 			}
 
 		}catch( error ){
-			throw new Error( "error checking file if writing, " + error.message );
+			throw new Error( `cannot write file, ${ error }` );
 		}
 
 	}else{
 		let self = zelf( this );
 
-		let catcher = letgo.bind( self )( );
+		let catcher = letgo.bind( self )( function later( cache ){
+			kept( path, WRITE )
+				( function done( error, writable ){
+					if( error ){
+						error = new Error( `cannot write file, ${ error }` );
 
-		kept( path, WRITE )
-			( function ifWritable( error, writable ){
-				if( error ){
-					error = new Error( "error checking file writability, " + error.message );
+						cache.callback( error, false );
 
-					catcher.cache.callback( error, false );
+					}else if( writable ){
+						fs.writeFile( path, content,
+							function done( error, result ){
+								if( error ){
+									error = new Error( `error writing to file, ${ error }` );
 
-				}else if( writable ){
-					fs.writeFile( path, content,
-						function onWrite( error, result ){
-							if( error ){
-								error = new Error( "error writing to file, " + error.message );
+									cache.callback( error, false );
 
-								catcher.cache.callback( error, false );
+								}else{
+									cache.callback( null, true );
+								}
+							} );
 
-							}else{
-								catcher.cache.callback( null, true );
-							}
-						} );
+					}else{
+						cache.callback( null, false );
+					}
 
-				}else{
-					catcher.cache.callback( null, false );
-				}
-			} );
+					catcher.release( );
+				} );
+		} );
 
 		return catcher;
 	}
