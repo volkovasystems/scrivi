@@ -1,8 +1,8 @@
-const lire = require( "./scrivi.js" );
+const scrivi = require( "./scrivi.js" );
 
 console.log( scrivi( "./hello.world", "hello world", true ) )
 
-lire( "./package.json" )
+scrivi( "./hello.world", "yeah world" )
 	( function done( error, result ){
 		console.log( arguments );
 	} );
