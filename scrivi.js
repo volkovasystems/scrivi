@@ -92,7 +92,7 @@ const scrivi = function scrivi( path, content, synchronous ){
 					return true;
 
 				}catch( error ){
-					throw new Error( `error writing to file, ${ error }` );
+					throw new Error( `error writing to file, ${ error.stack }` );
 				}
 
 			}else{
@@ -100,7 +100,7 @@ const scrivi = function scrivi( path, content, synchronous ){
 			}
 
 		}catch( error ){
-			throw new Error( `cannot write file, ${ error }` );
+			throw new Error( `cannot write file, ${ error.stack }` );
 		}
 
 	}else{
@@ -110,7 +110,7 @@ const scrivi = function scrivi( path, content, synchronous ){
 			kept( path, WRITE )
 				( function done( error, writable ){
 					if( error ){
-						error = new Error( `cannot write file, ${ error }` );
+						error = new Error( `cannot write file, ${ error.stack }` );
 
 						cache.callback( error, false );
 
@@ -118,7 +118,7 @@ const scrivi = function scrivi( path, content, synchronous ){
 						fs.writeFile( path, content,
 							function done( error, result ){
 								if( error ){
-									error = new Error( `error writing to file, ${ error }` );
+									error = new Error( `error writing to file, ${ error.stack }` );
 
 									cache.callback( error, false );
 
