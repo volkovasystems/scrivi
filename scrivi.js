@@ -3,7 +3,7 @@
 		The MIT License (MIT)
 		@mit-license
 
-		Copyright (@c) 2016 Richeve Siodina Bebedor
+		Copyright (@c) 2017 Richeve Siodina Bebedor
 		@email: richeve.bebedor@gmail.com
 
 		Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -48,6 +48,7 @@
 
 	@include:
 		{
+			"falzy": "falzy",
 			"fs": "fs",
 			"kept": "kept",
 			"letgo": "letgo",
