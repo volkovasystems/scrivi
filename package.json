@@ -1,6 +1,6 @@
 {
   "name": "scrivi",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Write file.",
   "main": "scrivi.js",
   "scripts": {
