@@ -32,10 +32,10 @@
 			"file": "scrivi.js",
 			"module": "scrivi",
 			"author": "Richeve S. Bebedor",
+			"eMail": "richeve.bebedor@gmail.com",
 			"contributors": [
 				"John Lenon Maghanoy <johnlenonmaghanoy@gmail.com>"
 			],
-			"eMail": "richeve.bebedor@gmail.com",
 			"repository": "https://github.com:volkovasystems/scrivi.git",
 			"test": "scrivi-test.js",
 			"global": true
@@ -51,7 +51,6 @@
 			"falzy": "falzy",
 			"fs": "fs",
 			"kept": "kept",
-			"letgo": "letgo",
 			"protype": "protype",
 			"zelf": "zelf"
 		}
@@ -61,7 +60,6 @@
 const falzy = require( "falzy" );
 const fs = require( "fs" );
 const kept = require( "kept" );
-const letgo = require( "letgo" );
 const protype = require( "protype" );
 const zelf = require( "zelf" );
 
@@ -107,36 +105,38 @@ const scrivi = function scrivi( path, content, synchronous ){
 	}else{
 		let self = zelf( this );
 
-		let catcher = letgo.bind( self )( function later( cache ){
-			kept( path, WRITE )
-				( function done( error, writable ){
-					if( error ){
-						error = new Error( `cannot write file, ${ error.stack }` );
+		let catcher = kept.bind( self )( path, WRITE )
+			.then( function done( error, writable ){
+				if( error ){
 
-						cache.callback( error, false );
+					return catcher.pass( new Error( `cannot write file, ${ error.stack }` ), "" );
 
-					}else if( writable ){
-						fs.writeFile( path, content,
-							function done( error, result ){
-								if( error ){
-									error = new Error( `error writing to file, ${ error.stack }` );
+				}else if( writable ){
+					fs.writeFile( path, content,
+						function done( error, result ){
+							if( error instanceof Error ){
 
-									cache.callback( error, false );
+								catcher.pass( new Error( `error writing to file, ${ error.stack }` ), false );
 
-								}else{
-									cache.callback( null, true );
-								}
-							} );
+							}else{
 
-					}else{
-						cache.callback( null, false );
-					}
+								catcher.pass( null, true );
 
-					catcher.release( );
-				} );
-		} );
+							}
+						} );
+
+						return catcher;
+
+				}else{
+
+					return catcher.pass( null, false );
+
+				}
+
+			} );
 
 		return catcher;
+
 	}
 };
 
