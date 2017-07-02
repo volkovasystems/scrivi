@@ -2,11 +2,11 @@ const assert = require( "assert" );
 const scrivi = require( "./scrivi.js" );
 
 assert.equal( scrivi( "./hello.world", "hello world", true ),
-false, "should be false" );
+				false, "should be false" );
 
-scrivi( "./hello.world", "yeah world" )
+scrivi( "./test.txt", "yeah world" )
 	( function done( error, result ){
-		console.log( arguments );
+		assert.equal( result, true, "should be true" );
 	} );
 
 console.log( "ok" );
