@@ -82,7 +82,7 @@ const scrivi = function scrivi( path, content, synchronous ){
 		throw new Error( "invalid content" );
 	}
 
-	if( synchronous ){
+	if( synchronous === true ){
 		try{
 			if( kept( path, WRITE, synchronous ) ){
 				try{
@@ -91,7 +91,7 @@ const scrivi = function scrivi( path, content, synchronous ){
 					return true;
 
 				}catch( error ){
-					throw new Error( `error writing to file, ${ error.stack }` );
+					throw new Error( `cannot write file, ${ error.stack }` );
 				}
 
 			}else{
@@ -103,40 +103,30 @@ const scrivi = function scrivi( path, content, synchronous ){
 		}
 
 	}else{
-		let self = zelf( this );
-
-		let catcher = kept.bind( self )( path, WRITE )
+		let catcher = kept.bind( zelf( this ) )( path, WRITE )
 			.then( function done( error, writable ){
-				if( error ){
-
-					return catcher.pass( new Error( `cannot write file, ${ error.stack }` ), "" );
+				if( error instanceof Error ){
+					return catcher.pass( new Error( `cannot write file, ${ error.stack }` ), false );
 
 				}else if( writable ){
 					fs.writeFile( path, content,
 						function done( error, result ){
 							if( error instanceof Error ){
-
-								catcher.pass( new Error( `error writing to file, ${ error.stack }` ), false );
+								catcher.pass( new Error( `cannot write file, ${ error.stack }` ), false );
 
 							}else{
-
 								catcher.pass( null, true );
-
 							}
 						} );
 
-						return catcher;
+					return catcher;
 
 				}else{
-
 					return catcher.pass( null, false );
-
 				}
-
 			} );
 
 		return catcher;
-
 	}
 };
 
