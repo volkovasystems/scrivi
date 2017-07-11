@@ -1,6 +1,6 @@
 {
   "name": "scrivi",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "description": "Write file.",
   "main": "scrivi.js",
   "scripts": {
@@ -27,7 +27,6 @@
   "dependencies": {
     "falzy": "^0.20.0",
     "kept": "^0.23.0",
-    "protype": "^0.22.0",
     "zelf": "^0.12.0"
   }
 }

@@ -51,7 +51,6 @@
 			"falzy": "falzy",
 			"fs": "fs",
 			"kept": "kept",
-			"protype": "protype",
 			"zelf": "zelf"
 		}
 	@end-include
@@ -60,7 +59,6 @@
 const falzy = require( "falzy" );
 const fs = require( "fs" );
 const kept = require( "kept" );
-const protype = require( "protype" );
 const zelf = require( "zelf" );
 
 const scrivi = function scrivi( path, content, synchronous ){
@@ -74,11 +72,11 @@ const scrivi = function scrivi( path, content, synchronous ){
 		@end-meta-configuration
 	*/
 
-	if( falzy( path ) || !protype( path, STRING ) ){
+	if( falzy( path ) || typeof path != "string" ){
 		throw new Error( "invalid path" );
 	}
 
-	if( falzy( content ) || !protype( content, STRING ) ){
+	if( falzy( content ) || typeof content != "string" ){
 		throw new Error( "invalid content" );
 	}
 
@@ -109,15 +107,14 @@ const scrivi = function scrivi( path, content, synchronous ){
 					return catcher.pass( new Error( `cannot write file, ${ error.stack }` ), false );
 
 				}else if( writable ){
-					fs.writeFile( path, content,
-						function done( error, result ){
-							if( error instanceof Error ){
-								catcher.pass( new Error( `cannot write file, ${ error.stack }` ), false );
+					fs.writeFile( path, content, function done( error, result ){
+						if( error instanceof Error ){
+							catcher.pass( new Error( `cannot write file, ${ error.stack }` ), false );
 
-							}else{
-								catcher.pass( null, true );
-							}
-						} );
+						}else{
+							catcher.pass( null, true );
+						}
+					} );
 
 					return catcher;
 
